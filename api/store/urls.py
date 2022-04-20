@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
-import store.views as views
+from .views import DummyView
 
 urlpatterns = [
-    path('dummy/', views.DummyView.as_view()),
+    path('dummy/', DummyView.as_view()),
 
 ]

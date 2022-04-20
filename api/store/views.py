@@ -6,7 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 
-import store.serializers as serializers
+# import api.store.serializers as serializers
+from .serializers import ResponseSerializer
 
 class DummyView(APIView):
 
@@ -16,7 +17,7 @@ class DummyView(APIView):
             "store":1,
             "category": "beer",
         }
-        serializer=serializers.ResponseSerializer(data=obj)
+        serializer = ResponseSerializer(data=obj)
         if serializer.is_valid():
             print("Valido el Serialiers")
             return Response(obj)
