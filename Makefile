@@ -16,14 +16,14 @@ superup:
 	docker-compose run api python manage.py migrate
 	docker-compose up --build -d
 
-# black:
-# 	docker-compose run app black *.py
+black:
+	docker-compose run api black ./*.py ./api/*.py ./store/*.py
 
 # flake8:
 # 	docker-compose run app flake8 *.py
 
 pylint:
-	docker-compose run api pylint ./api/*.py
+	docker-compose run api pylint *.py
 
 # test:
 # 	docker-compose run app pytest
