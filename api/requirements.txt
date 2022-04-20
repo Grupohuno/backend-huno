@@ -1,4 +1,7 @@
 Django>=4.0
 psycopg2>=2.8
+djangorestframework==3.13.1
+matplotlib
+whitenoise==6.0.0
 gunicorn
 django-heroku
