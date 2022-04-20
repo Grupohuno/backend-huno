@@ -9,12 +9,12 @@ from rest_framework import permissions
 # import api.store.serializers as serializers
 from .serializers import ResponseSerializer
 
-class DummyView(APIView):
 
+class DummyView(APIView):
     def get(self, request, *args, **kwargs):
         obj = {
             "name": "object 1",
-            "store":1,
+            "store": 1,
             "category": "beer",
         }
         serializer = ResponseSerializer(data=obj)
@@ -24,4 +24,3 @@ class DummyView(APIView):
 
         else:
             return Response({})
-
