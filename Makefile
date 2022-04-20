@@ -22,8 +22,8 @@ superup:
 # flake8:
 # 	docker-compose run app flake8 *.py
 
-# pylint:
-# 	docker-compose run app pylint *.py
+pylint:
+	docker-compose run api pylint ./api/*.py
 
 # test:
 # 	docker-compose run app pytest
