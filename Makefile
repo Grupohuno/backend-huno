@@ -25,8 +25,8 @@ black:
 pylint:
 	docker-compose run api pylint *.py
 
-# test:
-# 	docker-compose run app pytest
+test:
+	docker-compose run api pytest
 
 # seeds!:
 # 	# docker-compose run app python manage.py loaddata seeds.json seeds_binary.json
