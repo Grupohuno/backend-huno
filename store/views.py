@@ -7,17 +7,15 @@ from rest_framework import status
 from rest_framework import permissions
 
 # import api.store.serializers as serializers
-from .serializers import ResponseSerializer
+from .serializers import DummySerializer
 
 
 class DummyView(APIView):
     def get(self, request, *args, **kwargs):
         obj = {
-            "name": "object 1",
-            "store": 1,
-            "category": "beer",
+            "message": "Dummy success",
         }
-        serializer = ResponseSerializer(data=obj)
+        serializer = DummySerializer(data=obj)
         if serializer.is_valid():
             print("Valido el Serialiers")
             return Response(obj)

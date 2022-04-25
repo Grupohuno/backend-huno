@@ -1,0 +1,11 @@
+[MASTER]
+
+disable = C0114,C0115,C0116,W1202,R0903
+django-settings-module = api.settings
+load-plugins = pylint_django
+ignore=migrations
+
+[FORMAT]
+
+max-line-length = 120
+good-names = pk,os,s3
