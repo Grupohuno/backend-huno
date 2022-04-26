@@ -42,4 +42,4 @@ jobs:
       - name: "Check Code Format"
         run: make pylint
       - name: "Test Code"
-        run: sudo chown -R $USER:$USER /app/data/db && make supertest
+        run: sudo chown -R $USER:$USER /data/db && make supertest
