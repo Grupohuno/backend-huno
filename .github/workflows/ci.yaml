@@ -37,9 +37,11 @@ jobs:
           echo POSTGRES_NAME=${{ secrets.POSTGRES_NAME }} >> .env
           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+          echo POSTGRES_HOST=postgres >> .env
+          echo POSTGRES_PORT=5432 >> .env
       - name: "Install Dependencies"
         run: make build
       - name: "Check Code Format"
         run: make pylint
       - name: "Test Code"
-        run: sudo chown -R $USER:$USER /data/db && make supertest
+        run: make supertest
