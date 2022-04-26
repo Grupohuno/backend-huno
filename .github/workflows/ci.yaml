@@ -42,6 +42,4 @@ jobs:
       - name: "Check Code Format"
         run: make pylint
       - name: "Test Code"
-        run: |
-          export DATABASE_URL='postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}'
-          make supertest
+        run: make supertest
