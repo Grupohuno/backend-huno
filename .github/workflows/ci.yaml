@@ -23,15 +23,11 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
+          POSTGRES_PORT: 5432
         ports:
-          - 5432:5432
+          - 5432/tcp
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    # env:
-    #   SECRET_KEY: sfaf
-    #   DJANGO_SETTINGS_MODULE: api.settings
     steps:
-      - name: "Change execution permissions"
-        run: sudo chown -R $USER:$USER /home/github/actions-runner/_work/backend-huno
       - name: "Checkout code"
         uses: actions/checkout@v2
       - name: "Create env file"
