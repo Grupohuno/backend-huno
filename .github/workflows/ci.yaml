@@ -30,6 +30,8 @@ jobs:
     #   SECRET_KEY: sfaf
     #   DJANGO_SETTINGS_MODULE: api.settings
     steps:
+      - name: "Change execution permissions"
+        run: sudo chown -R $USER:$USER /home/github/actions-runner/_work/backend-huno
       - name: "Checkout code"
         uses: actions/checkout@v2
       - name: "Create env file"
@@ -45,4 +47,4 @@ jobs:
       - name: "Check Code Format"
         run: make pylint
       - name: "Test Code"
-        run: sudo make supertest
+        run: make supertest
