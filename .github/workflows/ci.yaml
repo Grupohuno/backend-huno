@@ -33,7 +33,7 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v2
       - name: "Install Dependencies"
-        run: ./run.sh build
+        run: make build
       - name: "Check Code Format"
         run: ../../make pylint
       - name: "Test Code"
