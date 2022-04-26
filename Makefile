@@ -28,5 +28,10 @@ pylint:
 test:
 	docker-compose run api pytest
 
+supertest:
+	docker-compose run api python manage.py makemigrations
+	docker-compose run api python manage.py migrate
+	docker-compose run api pytest
+
 # seeds!:
 # 	# docker-compose run app python manage.py loaddata seeds.json seeds_binary.json
