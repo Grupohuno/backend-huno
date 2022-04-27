@@ -42,4 +42,4 @@ jobs:
       - name: "Check Code Format"
         run: make pylint
       - name: "Test Code"
-        run: make supertest
+        run: sudo make supertest
