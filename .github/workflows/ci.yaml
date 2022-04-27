@@ -42,6 +42,4 @@ jobs:
       - name: "Check Code Format"
         run: make pylint
       - name: "Test Code"
-        run: |
-          sudo chown -R 777 ./data
-          make supertest
+        run: make supertest
