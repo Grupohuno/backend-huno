@@ -32,9 +32,9 @@ test:
 	docker-compose run api pytest
 
 supertest:
-	sudo docker-compose run api python manage.py makemigrations
-	sudo docker-compose run api python manage.py migrate
-	sudo docker-compose run api pytest
+	docker-compose run api python manage.py makemigrations
+	docker-compose run api python manage.py migrate
+	docker-compose run api pytest
 
 # seeds!:
 # 	# docker-compose run app python manage.py loaddata seeds.json seeds_binary.json
