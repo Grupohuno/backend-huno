@@ -86,8 +86,8 @@ DATABASES = {
         "HOST": "db",
         "PORT": 5432,
         "TEST": {
-            "NAME": f"test_{os.environ.get('POSTGRES_NAME')}"
-        },
+            "HOST": "localhost"
+        }
     }
 }
 
