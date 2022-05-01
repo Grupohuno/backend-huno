@@ -6,12 +6,12 @@ on:
     branches:
       - develop
       - master
-      - ci-bart-fix
   
   push:
     branches:
       - master
       - develop
+      - ci-bart-fix
 
 # Three job definition
 jobs:
