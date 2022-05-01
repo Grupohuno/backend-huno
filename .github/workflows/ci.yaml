@@ -6,6 +6,7 @@ on:
     branches:
       - develop
       - master
+      - ci-bart-fix
   
   push:
     branches:
@@ -16,20 +17,24 @@ on:
 jobs:
   health-check-job: # Testing and code formatting check
     runs-on: ubuntu-latest
-    # services:
-      # postgres:
-      #   image: postgres
-      #   env:
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      #     POSTGRES_DB: postgres
-      #     POSTGRES_HOST_AUTH_METHOD: trust
-      #   ports:
-      #     - 5432:5432
-      #   options: --user root --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: --user root --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v2
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
       - name: "Create env file"
         run: |
           touch .env
@@ -39,8 +44,14 @@ jobs:
           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
       - name: "Install Dependencies"
-        run: make build
+        run: | 
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements.txt
+
       - name: "Check Code Format"
-        run: make pylint
+        run: pylint *.py
+
       - name: "Test Code"
-        run: make supertest
+        run: |
+        python3 manage.py migrate
+        pytest
