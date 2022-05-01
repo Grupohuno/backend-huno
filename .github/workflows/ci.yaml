@@ -19,6 +19,7 @@ jobs:
     services:
       postgres:
         image: postgres
+        options: --user root
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
