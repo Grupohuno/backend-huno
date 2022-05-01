@@ -18,6 +18,7 @@ RUN apk --purge del .build-deps
 
 # Copy files to image
 COPY . .
+RUN chown daemon:daemon -R /app
 
 RUN adduser -D user
 USER user
