@@ -53,5 +53,5 @@ jobs:
 
       - name: "Test Code"
         run: |
-        python3 manage.py migrate
-        pytest 
+          python3 manage.py migrate
+          pytest 
