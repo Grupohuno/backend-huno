@@ -21,7 +21,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_USER: runner
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: postgres
           POSTGRES_HOST_AUTH_METHOD: trust
@@ -44,7 +44,7 @@ jobs:
           echo SECRET_KEY={{ secrets.SECRET_KEY }} >> .env
           echo DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }} >> .env
           echo POSTGRES_NAME=${{ secrets.POSTGRES_NAME }} >> .env
-          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+          echo POSTGRES_USER=runner >> .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
 
       - name: "Install Dependencies"
