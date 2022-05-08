@@ -23,8 +23,8 @@ RUN chown daemon:daemon -R /app
 # RUN adduser -D user
 # USER user
 RUN addgroup -S appgroup && adduser -S nir -G appgroup
-RUN chown nir:appgroup /manage.py
-RUN chmod +x /manage.py
+RUN chown nir:appgroup /app/manage.py
+RUN chmod +x /app/manage.py
 USER nir
 
 CMD python3 manage.py runserver 0.0.0.0:8000
