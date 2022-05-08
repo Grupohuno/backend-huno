@@ -16,17 +16,6 @@ on:
 jobs:
   health-check-job: # Testing and code formatting check
     runs-on: ubuntu-latest
-    # services:
-      # postgres:
-      #   image: postgres
-      #   env:
-      #     POSTGRES_USER: postgres
-      #     POSTGRES_PASSWORD: postgres
-      #     POSTGRES_DB: postgres
-      #     POSTGRES_HOST_AUTH_METHOD: trust
-      #   ports:
-      #     - 5432:5432
-      #   options: --user root --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v2
