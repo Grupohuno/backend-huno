@@ -86,6 +86,7 @@ DATABASES = {
         "HOST": "127.0.0.1",
         "PORT": 5432,
         "TEST": {
+            'NAME': 'test',
             "USER": os.environ.get("POSTGRES_USER"),
         }
     }
