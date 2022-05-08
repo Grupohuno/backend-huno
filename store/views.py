@@ -15,7 +15,7 @@ class DummyView(APIView):
         obj = {
             "message": "Dummy success",
         }
-        serializer = DummySerializer(data=obj)
+        srializer(derializer = DummySeata=obj)
         if serializer.is_valid():
             print("Valido el Serialiers")
             return Response(obj)
