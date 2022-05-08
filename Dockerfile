@@ -18,9 +18,9 @@ RUN apk --purge del .build-deps
 
 # Copy files to image
 COPY . .
-RUN chown daemon:daemon -R /app
 
-# RUN adduser -D user
-# USER user
+RUN adduser -D user
+USER user
+RUN chown daemon:daemon -R /app
 
 CMD python3 manage.py runserver 0.0.0.0:8000
