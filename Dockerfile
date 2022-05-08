@@ -20,9 +20,13 @@ RUN apk --purge del .build-deps
 COPY . .
 RUN chown daemon:daemon -R /app
 
-RUN adduser -D user
-RUN chown user /app/manage.py
-RUN chmod +x /app/manage.py
-USER user
+# RUN adduser -D user
+RUN addgroup -S appgroup && adduser -S nir -G appgroup
+RUN chown nir:appgroup /app/*
+RUN chmod +x /app/*
+USER nir
+# RUN chown user /app/manage.py
+# RUN chmod +x /app/manage.py
+# USER user
 
 CMD python3 manage.py runserver 0.0.0.0:8000
