@@ -6,7 +6,7 @@ on:
     branches:
       - develop
       - master
-
+  
   push:
     branches:
       - master
@@ -29,32 +29,33 @@ jobs:
           - 5432:5432
         options: --user root --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - name: 'Checkout code'
+      - name: "Checkout code"
         uses: actions/checkout@v2
-
+      
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: '3.10' # Version range or exact version of a Python version to use, using SemVer's version range syntax
           architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
 
-      - name: 'Create env file'
+      - name: "Create env file"
         run: |
           touch .env
-          echo SECRET_KEY=secret >> .env
+          echo SECRET_KEY={{ secrets.SECRET_KEY }} >> .env
+          echo DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }} >> .env
           echo POSTGRES_NAME=${{ secrets.POSTGRES_NAME }} >> .env
           echo POSTGRES_USER=runner >> .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
 
-      - name: 'Install Dependencies'
-        run: |
+      - name: "Install Dependencies"
+        run: | 
           python3 -m pip install --upgrade pip
           python3 -m pip install -r requirements.txt
 
-      - name: 'Check Code Format'
+      - name: "Check Code Format"
         run: pylint *.py
 
-      - name: 'Test Code'
+      - name: "Test Code"
         run: |
           python3 manage.py migrate
-          pytest
+          pytest 
