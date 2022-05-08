@@ -21,8 +21,8 @@ COPY . .
 RUN chown daemon:daemon -R /app
 
 RUN adduser -D user
-RUN chown user /app/
-RUN chmod +x /app/
+RUN chown user /app/manage.py
+RUN chmod +x /app/manage.py
 USER user
 
 CMD python3 manage.py runserver 0.0.0.0:8000
