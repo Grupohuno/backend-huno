@@ -29,7 +29,7 @@ class Product(models.Model):
     sku = models.CharField(max_length=180)
     list_price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
-    size = models.DecimalField()
+    size = models.DecimalField(max_digits=10, decimal_places=2)
     size_metric = models.CharField(max_length=180)
 
     def __str__(self):
