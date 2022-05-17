@@ -29,6 +29,7 @@ def test_create_product():
         size=9.1,
         size_metric="sm",
         image_url="www.image.cl",
+        page_url="www.buypage.cl",
     )
     assert product.name == "P1"
     assert product.store_id.name == "Store1"
@@ -38,6 +39,7 @@ def test_create_product():
     assert product.size == 9.1
     assert product.size_metric == "sm"
     assert product.image_url == "www.image.cl"
+    assert product.page_url == "www.buypage.cl"
 
 
 @pytest.mark.django_db
