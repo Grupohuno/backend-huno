@@ -9,16 +9,16 @@ class DummySerializer(serializers.Serializer):
 class StoreModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ProductModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = "__all__"
 
 
 class CategoryModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = "__all__"
