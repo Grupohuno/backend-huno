@@ -28,6 +28,7 @@ def test_create_product():
         description="description",
         size=9.1,
         size_metric="sm",
+        image_url="www.image.cl",
     )
     assert product.name == "P1"
     assert product.store_id.name == "Store1"
@@ -36,6 +37,7 @@ def test_create_product():
     assert product.description == "description"
     assert product.size == 9.1
     assert product.size_metric == "sm"
+    assert product.image_url == "www.image.cl"
 
 
 @pytest.mark.django_db
@@ -50,6 +52,7 @@ def test_create_price():
         description="description",
         size=9.1,
         size_metric="sm",
+        image_url="www.image.cl",
     )
     price = Price.objects.create(price=1990, date="2022-05-17", product_id=product)
     assert price.price == 1990
