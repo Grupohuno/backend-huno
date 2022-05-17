@@ -1,0 +1,18 @@
+[
+  {
+    "model": "store.store",
+    "pk": 1,
+    "fields": {
+      "name": "Liquidos",
+      "web_url": "https://www.liquidos.cl/"
+    }
+  },
+  {
+    "model": "store.store",
+    "pk": 2,
+    "fields": {
+      "name": "Lider",
+      "web_url": "https://www.lider.cl/"
+    }
+  }
+]

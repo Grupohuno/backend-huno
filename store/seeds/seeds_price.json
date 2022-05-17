@@ -1,0 +1,29 @@
+[
+  {
+    "model": "store.price",
+    "pk": 1,
+    "fields": {
+      "price": 4490,
+      "product_id": 1,
+      "date": "2022-05-17"
+    }
+  },
+  {
+    "model": "store.price",
+    "pk": 2,
+    "fields": {
+      "price": 7950,
+      "product_id": 2,
+      "date": "2022-05-17"
+    }
+  },
+  {
+    "model": "store.price",
+    "pk": 3,
+    "fields": {
+      "price": 1990,
+      "product_id": 3,
+      "date": "2022-05-17"
+    }
+  }
+]
