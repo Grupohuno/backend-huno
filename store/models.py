@@ -25,7 +25,7 @@ class Product(models.Model):
     description = models.TextField()
     size = models.DecimalField(max_digits=10, decimal_places=2)
     size_metric = models.CharField(max_length=180)
-    image_url = models.CharField(max_length=180)
+    image_url = models.CharField(max_length=280)
     page_url = models.CharField(max_length=180)
 
     def __str__(self):
