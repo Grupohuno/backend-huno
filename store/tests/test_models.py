@@ -25,9 +25,8 @@ def test_create_product():
         store_id=store,
         category_id=category,
         sku="1234",
-        description="description",
-        size=9.1,
-        size_metric="sm",
+        brand="brand",
+        size="330cc",
         image_url="www.image.cl",
         page_url="www.buypage.cl",
     )
@@ -35,9 +34,8 @@ def test_create_product():
     assert product.store_id.name == "Store1"
     assert product.category_id.name == "C1"
     assert product.sku == "1234"
-    assert product.description == "description"
-    assert product.size == 9.1
-    assert product.size_metric == "sm"
+    assert product.brand == "brand"
+    assert product.size == "330cc"
     assert product.image_url == "www.image.cl"
     assert product.page_url == "www.buypage.cl"
 
@@ -51,9 +49,8 @@ def test_create_price():
         store_id=store,
         category_id=category,
         sku="1234",
-        description="description",
-        size=9.1,
-        size_metric="sm",
+        brand="brand",
+        size="330cc",
         image_url="www.image.cl",
     )
     price = Price.objects.create(price=1990, date="2022-05-17", product_id=product)
