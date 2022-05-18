@@ -25,5 +25,32 @@
       "product_id": 3,
       "date": "2022-05-17"
     }
+  },
+  {
+    "model": "store.price",
+    "pk": 4,
+    "fields": {
+      "price": 24990,
+      "product_id": 4,
+      "date": "2022-05-17"
+    }
+  },
+  {
+    "model": "store.price",
+    "pk": 5,
+    "fields": {
+      "price": 6990,
+      "product_id": 5,
+      "date": "2022-05-17"
+    }
+  },
+  {
+    "model": "store.price",
+    "pk": 6,
+    "fields": {
+      "price": 13140,
+      "product_id": 6,
+      "date": "2022-05-17"
+    }
   }
 ]
