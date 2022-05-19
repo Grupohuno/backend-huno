@@ -1,5 +1,4 @@
 # Create your views here.
-from math import prod
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -68,6 +67,7 @@ class CategoryView(APIView):
             response.append(product_obj)
         return Response(response)
 
+
 class ProductView(APIView):
     def get_product(self, product_id):
         print(product_id)
@@ -78,26 +78,27 @@ class ProductView(APIView):
             raise Http404 from None
 
     def get(self, request, product_id, *args, **kwargs):
-        product= self.get_product(product_id)
+        product = self.get_product(product_id)
         product_obj = {
-                "id": product.id,
-                "name": product.name,
-                "store": product.store_id.name,
-                "category": product.category_id.name,
-                "brand": product.brand,
-                "size": product.size,
-                "image": product.image_url,
-                "redirect_page": product.page_url,
-                "price": Price.objects.filter(product_id=product).last().price,
-            }
+            "id": product.id,
+            "name": product.name,
+            "store": product.store_id.name,
+            "category": product.category_id.name,
+            "brand": product.brand,
+            "size": product.size,
+            "image": product.image_url,
+            "redirect_page": product.page_url,
+            "price": Price.objects.filter(product_id=product).last().price,
+        }
         return Response(product_obj)
+
 
 class UpdateProductsView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             print(request.data)
-            response={"message": "Information Received"}
+            response = {"message": "Information Received"}
             return Response(response)
         except:
-            response={"message": "ERROR"}
+            response = {"message": "ERROR"}
             return Response(response)
