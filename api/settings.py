@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['grupohuno-backend.herokuapp.com']
+ALLOWED_HOSTS = ["grupohuno-backend.herokuapp.com"]
 
 
 # Application definition
@@ -85,10 +85,9 @@ DATABASES = {
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
         "HOST": "db",
         "PORT": 5432,
-        
         "TEST": {
             "USER": os.environ.get("POSTGRES_USER"),
-        }
+        },
     }
 }
 

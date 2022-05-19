@@ -1,0 +1,86 @@
+[
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "name": "Cerveza Lager Botellin",
+      "store_id": 2,
+      "category_id": 1,
+      "sku": "730940",
+      "brand": "Corona",
+      "size": "330cc",
+      "image_url": "https://images.lider.cl/wmtcl?source=url%5Bfile:/productos/993393b.jpg%5D&viewport=color%5Bwhite%5D,height%5B800%5D,seed%5B1633617940%5D,vsize%5B524%5D,width%5B800%5D,x%5B0%5D,y%5B0%5D&sink",
+      "page_url": "https://www.lider.cl/supermercado/product/Corona-Cerveza-Lager-Botellin/993393"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+      "name": "Pisco especial 35° Botella",
+      "store_id": 2,
+      "category_id": 2,
+      "sku": "381114",
+      "brand": "Alto del Carmen",
+      "size": "1L",
+      "image_url": "https://images.lider.cl/wmtcl?source=url%5Bfile:/productos/468481a.jpg%5D&viewport=color%5Bwhite%5D,height%5B800%5D,seed%5B1652203843%5D,vsize%5B524%5D,width%5B800%5D,x%5B0%5D,y%5B0%5D&sink",
+      "page_url": "https://www.lider.cl/supermercado/product/Alto-del-Carmen-Pisco-especial-35-Botella/468481"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 3,
+    "fields": {
+      "name": "Bebida Light Botella",
+      "store_id": 2,
+      "category_id": 3,
+      "sku": "491396",
+      "brand": "Coca-Cola",
+      "size": "2,5L",
+      "image_url": "https://images.lider.cl/wmtcl?source=url%5Bfile:/productos/7415a.jpg%5D&viewport=color%5Bwhite%5D,height%5B1000%5D,seed%5B1652238315%5D,vsize%5B524%5D,width%5B1000%5D,x%5B0%5D,y%5B0%5D&sink",
+      "page_url": "https://www.lider.cl/supermercado/product/Coca-Cola-Bebida-Light-Botella/7415"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+      "name": "Cerveza Patagonia Hoppy Lager lata 470 CC x24",
+      "store_id": 1,
+      "category_id": 1,
+      "sku": "20276",
+      "brand": "Patagonia",
+      "size": "lata 470 CC x24",
+      "image_url": "https://images.lider.cl/wmtcl?source=url%5Bfile:/productos/993393b.jpg%5D&viewport=color%5Bwhite%5D,height%5B800%5D,seed%5B1633617940%5D,vsize%5B524%5D,width%5B800%5D,x%5B0%5D,y%5B0%5D&sink",
+      "page_url": "https://www.lider.cl/supermercado/product/Corona-Cerveza-Lager-Botellin/993393"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+      "name": "Promo Alto del Carmen 35° Botella 1Lt + Coca Cola 3Lt",
+      "store_id": 1,
+      "category_id": 2,
+      "sku": "1163",
+      "brand": "Alto del Carmen",
+      "size": "1Lt + 3Lt",
+      "image_url": "https://images.lider.cl/wmtcl?source=url%5Bfile:/productos/993393b.jpg%5D&viewport=color%5Bwhite%5D,height%5B800%5D,seed%5B1633617940%5D,vsize%5B524%5D,width%5B800%5D,x%5B0%5D,y%5B0%5D&sink",
+      "page_url": "https://www.lider.cl/supermercado/product/Corona-Cerveza-Lager-Botellin/993393"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 6,
+    "fields": {
+      "name": "Coca Cola normal 3 litros x6",
+      "store_id": 1,
+      "category_id": 3,
+      "sku": "740",
+      "brand": "Coca Cola",
+      "size": "3L x 6",
+      "image_url": "https://images.lider.cl/wmtcl?source=url%5Bfile:/productos/993393b.jpg%5D&viewport=color%5Bwhite%5D,height%5B800%5D,seed%5B1633617940%5D,vsize%5B524%5D,width%5B800%5D,x%5B0%5D,y%5B0%5D&sink",
+      "page_url": "https://www.lider.cl/supermercado/product/Corona-Cerveza-Lager-Botellin/993393"
+    }
+  }
+]
