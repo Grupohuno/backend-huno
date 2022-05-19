@@ -99,6 +99,6 @@ class UpdateProductsView(APIView):
             print(request.data)
             response = {"message": "Information Received"}
             return Response(response)
-        except:
+        except Exception:
             response = {"message": "ERROR"}
             return Response(response)
