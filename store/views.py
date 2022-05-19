@@ -92,3 +92,12 @@ class ProductView(APIView):
             }
         return Response(product_obj)
 
+class UpdateProductsView(APIView):
+    def post(self, request, *args, **kwargs):
+        try:
+            print(request.data)
+            response={"message": "Information Received"}
+            return Response(response)
+        except:
+            response={"message": "ERROR"}
+            return Response(response)
