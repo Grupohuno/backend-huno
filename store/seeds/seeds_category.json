@@ -1,0 +1,23 @@
+[
+    {
+      "model": "store.category",
+      "pk": 1,
+      "fields": {
+        "name": "Cerveza"
+      }
+    },
+    {
+      "model": "store.category",
+      "pk": 2,
+      "fields": {
+        "name": "Pisco"
+      }
+    },
+    {
+        "model": "store.category",
+        "pk": 3,
+        "fields": {
+          "name": "Bebida"
+        }
+      }
+  ]

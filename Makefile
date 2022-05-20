@@ -36,5 +36,5 @@ supertest:
 	sudo docker-compose run api python manage.py migrate
 	sudo docker-compose run api pytest
 
-# seeds!:
-# 	# docker-compose run app python manage.py loaddata seeds.json seeds_binary.json
+seeds!:
+	docker-compose run api python manage.py loaddata store/seeds/*.json
