@@ -40,6 +40,29 @@ class ProductsView(APIView):
             response.append(product_obj)
         return Response(response)
 
+    def get_by_keyword(self, request, *args, **kwargs):
+        response = []
+        print(request.query_params)
+        keyword = request.query_params.get('keyword')
+        products = Product.objects.all()
+        filtered_products = products.filter(name=keyword)
+        if len(filtered_products) > 0:
+            for product in filtered_products:
+                product_obj = {
+                    "id": product.id,
+                    "name": product.name,
+                    "store": product.store_id.name,
+                    "category": product.category_id.name,
+                    "brand": product.brand,
+                    "size": product.size,
+                    "image": product.image_url,
+                    "redirect_page": product.page_url,
+                    "price": Price.objects.filter(product_id=product).last().price,
+                }
+                response.append(product_obj)
+            return Response(response)
+        return Response(None)
+
 
 class CategoryView(APIView):
     def get_category(self, category):
@@ -102,3 +125,36 @@ class UpdateProductsView(APIView):
         except Exception:
             response = {"message": "ERROR"}
             return Response(response)
+
+
+class FilterProductsView(APIView):
+    def get_by_keyword(self, keyword, *args, **kwargs):
+        products = Product.objects.all()
+        try:
+            return products.filter(name__icontains=keyword)
+        except Product.DoesNotExist:
+            raise Http404 from None
+
+    def get(self, request, *args, **kwargs):
+        response = []
+        print(request.query_params)
+        keyword = request.query_params.get('keyword')
+        filtered_products = self.get_by_keyword(keyword)
+        print(filtered_products)
+        if len(filtered_products) > 0:
+            for product in filtered_products:
+                product_obj = {
+                    "id": product.id,
+                    "name": product.name,
+                    "store": product.store_id.name,
+                    "category": product.category_id.name,
+                    "brand": product.brand,
+                    "size": product.size,
+                    "image": product.image_url,
+                    "redirect_page": product.page_url,
+                    "price": Price.objects.filter(product_id=product).last().price,
+                }
+                response.append(product_obj)
+            return Response(response)
+        else:
+            raise Http404 from None
