@@ -133,5 +133,4 @@ class FilterProductsView(APIView):
                 }
                 response.append(product_obj)
             return Response(response)
-        else:
-            raise Http404 from None
+        raise Http404 from None
