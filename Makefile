@@ -17,6 +17,7 @@ makemigrations!:
 superup:
 	docker-compose run api python manage.py makemigrations
 	docker-compose run api python manage.py migrate
+	docker-compose run api python manage.py loaddata store/seeds/*.json
 	docker-compose up --build -d
 
 black:
