@@ -1,12 +1,15 @@
 # Create your views here.
+
 from django.http import Http404
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from store.models import Category, Price, Product
+from store.models import Category, Price, Product, Store
 
 # import api.store.serializers as serializers
 from .serializers import DummySerializer
+from .utils import get_time
 
 
 class DummyView(APIView):
@@ -96,12 +99,42 @@ class ProductView(APIView):
 class UpdateProductsView(APIView):
     def post(self, request, *args, **kwargs):
         try:
-            print(request.data)
-            response = {"message": "Information Received"}
-            return Response(response)
+            store_name = request.data["store"].title()
+            products_list = request.data["products_list"]
         except Exception:
-            response = {"message": "ERROR"}
-            return Response(response)
+            return Response({"message": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            print(store_name)
+            store = Store.objects.get(name=store_name)
+        except Exception:
+            return Response({"message": "Invalid store"}, status=status.HTTP_400_BAD_REQUEST)
+
+        for product in products_list:
+            try:
+                category = Category.objects.get(name=product["category"].title())
+            except Exception:
+                return Response(
+                    {"message": "Error in Category", "product": product}, status=status.HTTP_400_BAD_REQUEST
+                )
+            try:
+                product_obj = Product.objects.get(sku=product["sku"])
+            except Product.DoesNotExist:
+                product_obj = Product.objects.create(
+                    name=product["name"],
+                    store_id=store,
+                    category_id=category,
+                    sku=product["sku"],
+                    brand=product["brand"],
+                    size=product["size"],
+                    image_url=product["image_url"],
+                    page_url=product["page_url"],
+                )
+            time_now = get_time()
+            Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
+
+        response = {"message": "Information Received"}
+        return Response(response)
 
 
 class FilterProductsView(APIView):
@@ -115,7 +148,7 @@ class FilterProductsView(APIView):
     def get(self, request, *args, **kwargs):
         response = []
         print(request.query_params)
-        keyword = request.query_params.get('keyword')
+        keyword = request.query_params.get("keyword")
         filtered_products = self.get_by_keyword(keyword)
         print(filtered_products)
         if len(filtered_products) > 0:

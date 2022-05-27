@@ -23,7 +23,7 @@ class Product(models.Model):
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, related_name="category")
     sku = models.CharField(max_length=180)
     brand = models.CharField(max_length=180)
-    size = models.CharField(max_length=180)
+    size = models.CharField(max_length=180, null=True)
     image_url = models.CharField(max_length=280)
     page_url = models.CharField(max_length=180)
 

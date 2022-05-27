@@ -9,3 +9,4 @@ black==22.3.0
 whitenoise==6.0.0
 gunicorn
 django-heroku
+django-cors-headers 
