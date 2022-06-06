@@ -39,6 +39,7 @@ class ProductsView(APIView):
                 "image": product.image_url,
                 "redirect_page": product.page_url,
                 "price": Price.objects.filter(product_id=product).last().price,
+                "is_promotion": product.is_promotion,
             }
             response.append(product_obj)
         return Response(response)
@@ -66,6 +67,7 @@ class CategoryView(APIView):
                 "image": product.image_url,
                 "redirect_page": product.page_url,
                 "price": Price.objects.filter(product_id=product).last().price,
+                "is_promotion": product.is_promotion,
             }
             response.append(product_obj)
         return Response(response)
@@ -92,6 +94,7 @@ class ProductView(APIView):
             "image": product.image_url,
             "redirect_page": product.page_url,
             "price": Price.objects.filter(product_id=product).last().price,
+            "is_promotion": product.is_promotion,
         }
         return Response(product_obj)
 
@@ -129,6 +132,7 @@ class UpdateProductsView(APIView):
                     size=product["size"],
                     image_url=product["image_url"],
                     page_url=product["page_url"],
+                    is_promotion = product["is_promotion"],
                 )
             time_now = get_time()
             Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
@@ -163,6 +167,7 @@ class FilterProductsView(APIView):
                     "image": product.image_url,
                     "redirect_page": product.page_url,
                     "price": Price.objects.filter(product_id=product).last().price,
+                    "is_promotion": product.is_promotion,
                 }
                 response.append(product_obj)
             return Response(response)
