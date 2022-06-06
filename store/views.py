@@ -8,8 +8,9 @@ from rest_framework.views import APIView
 from store.models import Category, Price, Product, Store
 
 # import api.store.serializers as serializers
-from .serializers import DummySerializer
+from .serializers import DummySerializer, ProductResponseSerializer
 from .utils import get_time
+from .services import build_obj_list, build_obj
 
 
 class DummyView(APIView):
@@ -26,23 +27,10 @@ class DummyView(APIView):
 
 class ProductsView(APIView):
     def get(self, request, *args, **kwargs):
-        response = []
-        products = Product.objects.all()
-        for product in products:
-            product_obj = {
-                "id": product.id,
-                "name": product.name,
-                "store": product.store_id.name,
-                "category": product.category_id.name,
-                "brand": product.brand,
-                "size": product.size,
-                "image": product.image_url,
-                "redirect_page": product.page_url,
-                "price": Price.objects.filter(product_id=product).last().price,
-                "is_promotion": product.is_promotion,
-            }
-            response.append(product_obj)
-        return Response(response)
+        products = Product.objects.all().order_by("id")
+        products_list = build_obj_list(products)
+        serializer = ProductResponseSerializer(products_list, many=True)
+        return Response(serializer.data)
 
 
 class CategoryView(APIView):
@@ -54,29 +42,14 @@ class CategoryView(APIView):
 
     def get(self, request, category, *args, **kwargs):
         category_obj = self.get_category(category.title())
-        response = []
-        products = Product.objects.filter(category_id=category_obj)
-        for product in products:
-            product_obj = {
-                "id": product.id,
-                "name": product.name,
-                "store": product.store_id.name,
-                "category": product.category_id.name,
-                "brand": product.brand,
-                "size": product.size,
-                "image": product.image_url,
-                "redirect_page": product.page_url,
-                "price": Price.objects.filter(product_id=product).last().price,
-                "is_promotion": product.is_promotion,
-            }
-            response.append(product_obj)
-        return Response(response)
+        products = Product.objects.filter(category_id=category_obj).order_by("id")
+        products_list = build_obj_list(products)
+        serializer = ProductResponseSerializer(products_list, many=True)
+        return Response(serializer.data)
 
 
 class ProductView(APIView):
     def get_product(self, product_id):
-        print(product_id)
-        print(type(product_id))
         try:
             return Product.objects.get(pk=product_id)
         except Product.DoesNotExist:
@@ -84,19 +57,9 @@ class ProductView(APIView):
 
     def get(self, request, product_id, *args, **kwargs):
         product = self.get_product(product_id)
-        product_obj = {
-            "id": product.id,
-            "name": product.name,
-            "store": product.store_id.name,
-            "category": product.category_id.name,
-            "brand": product.brand,
-            "size": product.size,
-            "image": product.image_url,
-            "redirect_page": product.page_url,
-            "price": Price.objects.filter(product_id=product).last().price,
-            "is_promotion": product.is_promotion,
-        }
-        return Response(product_obj)
+        product_obj = build_obj(product)
+        serializer = ProductResponseSerializer(product_obj)
+        return Response(serializer.data)
 
 
 class UpdateProductsView(APIView):
