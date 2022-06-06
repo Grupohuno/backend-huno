@@ -26,6 +26,7 @@ class Product(models.Model):
     size = models.CharField(max_length=180, null=True)
     image_url = models.CharField(max_length=280)
     page_url = models.CharField(max_length=180)
+    is_promotion = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
