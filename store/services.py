@@ -1,6 +1,9 @@
-from store.models import Price, Product, Store, Category
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
+
+from store.models import Category, Price, Product, Store
+
+from .serializers import ProductPostSerializer
 from .utils import get_time
 
 
@@ -12,6 +15,7 @@ def build_obj_list(queryset):
             "name": product.name,
             "store": product.store_id.name,
             "category": product.category_id.name,
+            "sku": product.sku,
             "brand": product.brand,
             "size": product.size,
             "image": product.image_url,
@@ -29,6 +33,7 @@ def build_obj(product):
         "name": product.name,
         "store": product.store_id.name,
         "category": product.category_id.name,
+        "sku": product.sku,
         "brand": product.brand,
         "size": product.size,
         "image": product.image_url,
@@ -51,26 +56,35 @@ def validate_and_save_data(request):
     except Exception:
         return Response({"message": "Invalid store"}, status=status.HTTP_400_BAD_REQUEST)
 
+    error_list_products = []
     for product in products_list:
-        try:
-            category = Category.objects.get(name=product["category"].title())
-        except Exception:
-            return Response({"message": "Error in Category", "product": product}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            product_obj = Product.objects.get(sku=product["sku"])
-        except Product.DoesNotExist:
-            product_obj = Product.objects.create(
-                name=product["name"],
-                store_id=store,
-                category_id=category,
-                sku=product["sku"],
-                brand=product["brand"],
-                size=product["size"],
-                image_url=product["image_url"],
-                page_url=product["page_url"],
-                is_promotion=product["is_promotion"],
-            )
-        time_now = get_time()
-        Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
-    response = {"message": "Information Received"}
+        serializer = ProductPostSerializer(data=product)
+        if serializer.is_valid():
+            try:
+                category = Category.objects.get(name=product["category"].title())
+            except Exception:
+                return Response(
+                    {"message": "Error in Category", "product": product}, status=status.HTTP_400_BAD_REQUEST
+                )
+            try:
+                product_obj = Product.objects.get(sku=product["sku"])
+            except Product.DoesNotExist:
+                product_obj = Product.objects.create(
+                    name=product["name"],
+                    store_id=store,
+                    category_id=category,
+                    sku=product["sku"],
+                    brand=product["brand"],
+                    size=product["size"],
+                    image_url=product["image_url"],
+                    page_url=product["page_url"],
+                    is_promotion=product["is_promotion"],
+                )
+            time_now = get_time()
+            Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
+        else:
+            print(serializer.errors)
+            error_list_products.append(product)
+
+    response = {"message": "Information Received", "error_products": error_list_products}
     return Response(response)
