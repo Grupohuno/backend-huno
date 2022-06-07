@@ -1,11 +1,13 @@
 # Create your views here.
 
+from math import prod
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from store.models import Category, Product
 from .serializers import DummySerializer, ProductResponseSerializer
 from .services import build_obj_list, build_obj, validate_and_save_data
+from rest_framework.pagination import PageNumberPagination
 
 
 class DummyView(APIView):
@@ -20,15 +22,18 @@ class DummyView(APIView):
         return Response({})
 
 
-class ProductsView(APIView):
+class ProductsView(APIView, PageNumberPagination):
+    page_size = 40
     def get(self, request, *args, **kwargs):
         products = Product.objects.all().order_by("id")
-        products_list = build_obj_list(products)
+        results = self.paginate_queryset(products, request, view=self)
+        products_list = build_obj_list(results)
         serializer = ProductResponseSerializer(products_list, many=True)
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
 
 
-class CategoryView(APIView):
+class CategoryView(APIView, PageNumberPagination):
+    page_size = 40
     def get_category(self, category):
         try:
             return Category.objects.get(name=category)
@@ -38,9 +43,10 @@ class CategoryView(APIView):
     def get(self, request, category, *args, **kwargs):
         category_obj = self.get_category(category.title())
         products = Product.objects.filter(category_id=category_obj).order_by("id")
-        products_list = build_obj_list(products)
+        results = self.paginate_queryset(products, request, view=self)
+        products_list = build_obj_list(results)
         serializer = ProductResponseSerializer(products_list, many=True)
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
 
 
 class ProductView(APIView):
