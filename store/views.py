@@ -1,13 +1,12 @@
-# Create your views here.
-
-from math import prod
 from django.http import Http404
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from store.models import Category, Product
+
 from .serializers import DummySerializer, ProductResponseSerializer
-from .services import build_obj_list, build_obj, validate_and_save_data
-from rest_framework.pagination import PageNumberPagination
+from .services import build_obj, build_obj_list, validate_and_save_data
 
 
 class DummyView(APIView):
