@@ -24,6 +24,7 @@ class DummyView(APIView):
 
 class ProductsView(APIView, PageNumberPagination):
     page_size = 40
+
     def get(self, request, *args, **kwargs):
         products = Product.objects.all().order_by("id")
         results = self.paginate_queryset(products, request, view=self)
@@ -34,6 +35,7 @@ class ProductsView(APIView, PageNumberPagination):
 
 class CategoryView(APIView, PageNumberPagination):
     page_size = 40
+
     def get_category(self, category):
         try:
             return Category.objects.get(name=category)
@@ -71,6 +73,7 @@ class UpdateProductsView(APIView):
 
 class FilterProductsView(APIView, PageNumberPagination):
     page_size = 40
+
     def get_by_keyword(self, keyword, *args, **kwargs):
         products = Product.objects.all()
         try:
