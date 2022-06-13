@@ -1,11 +1,12 @@
-# Create your views here.
-
 from django.http import Http404
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from store.models import Category, Product
+
 from .serializers import DummySerializer, ProductResponseSerializer
-from .services import build_obj_list, build_obj, validate_and_save_data
+from .services import build_obj, build_obj_list, validate_and_save_data
 
 
 class DummyView(APIView):
@@ -20,15 +21,20 @@ class DummyView(APIView):
         return Response({})
 
 
-class ProductsView(APIView):
+class ProductsView(APIView, PageNumberPagination):
+    page_size = 40
+
     def get(self, request, *args, **kwargs):
         products = Product.objects.all().order_by("id")
-        products_list = build_obj_list(products)
+        results = self.paginate_queryset(products, request, view=self)
+        products_list = build_obj_list(results)
         serializer = ProductResponseSerializer(products_list, many=True)
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
 
 
-class CategoryView(APIView):
+class CategoryView(APIView, PageNumberPagination):
+    page_size = 40
+
     def get_category(self, category):
         try:
             return Category.objects.get(name=category)
@@ -38,9 +44,10 @@ class CategoryView(APIView):
     def get(self, request, category, *args, **kwargs):
         category_obj = self.get_category(category.title())
         products = Product.objects.filter(category_id=category_obj).order_by("id")
-        products_list = build_obj_list(products)
+        results = self.paginate_queryset(products, request, view=self)
+        products_list = build_obj_list(results)
         serializer = ProductResponseSerializer(products_list, many=True)
-        return Response(serializer.data)
+        return self.get_paginated_response(serializer.data)
 
 
 class ProductView(APIView):
@@ -63,7 +70,9 @@ class UpdateProductsView(APIView):
         return response
 
 
-class FilterProductsView(APIView):
+class FilterProductsView(APIView, PageNumberPagination):
+    page_size = 40
+
     def get_by_keyword(self, keyword, *args, **kwargs):
         products = Product.objects.all()
         try:
@@ -79,7 +88,6 @@ class FilterProductsView(APIView):
             raise Http404 from None
 
     def get(self, request, *args, **kwargs):
-        print(request.query_params)
         keyword = request.query_params.get("keyword")
         filtered_products = self.get_by_keyword(keyword)
         products_by_category = self.get_by_category(keyword)
@@ -87,7 +95,9 @@ class FilterProductsView(APIView):
         set_category = set(products_by_category)
         set_final = set_keyword.union(set_category)
         if len(set_final) > 0:
-            products_list = build_obj_list(set_final)
+
+            results = self.paginate_queryset(list(set_final), request, view=self)
+            products_list = build_obj_list(results)
             serializer = ProductResponseSerializer(products_list, many=True)
-            return Response(serializer.data)
+            return self.get_paginated_response(serializer.data)
         raise Http404 from None
