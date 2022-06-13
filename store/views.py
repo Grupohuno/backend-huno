@@ -69,7 +69,8 @@ class UpdateProductsView(APIView):
         return response
 
 
-class FilterProductsView(APIView):
+class FilterProductsView(APIView, PageNumberPagination):
+    page_size = 40
     def get_by_keyword(self, keyword, *args, **kwargs):
         products = Product.objects.all()
         try:
@@ -92,7 +93,9 @@ class FilterProductsView(APIView):
         set_category = set(products_by_category)
         set_final = set_keyword.union(set_category)
         if len(set_final) > 0:
-            products_list = build_obj_list(set_final)
+
+            results = self.paginate_queryset(list(set_final), request, view=self)
+            products_list = build_obj_list(results)
             serializer = ProductResponseSerializer(products_list, many=True)
-            return Response(serializer.data)
+            return self.get_paginated_response(serializer.data)
         raise Http404 from None
