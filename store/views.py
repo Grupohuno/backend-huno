@@ -1,15 +1,12 @@
-# Create your views here.
-
 from django.http import Http404
-from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from store.models import Category, Price, Product, Store
+from store.models import Category, Product
 
-# import api.store.serializers as serializers
-from .serializers import DummySerializer
-from .utils import get_time
+from .serializers import DummySerializer, ProductResponseSerializer
+from .services import build_obj, build_obj_list, validate_and_save_data
 
 
 class DummyView(APIView):
@@ -24,27 +21,20 @@ class DummyView(APIView):
         return Response({})
 
 
-class ProductsView(APIView):
+class ProductsView(APIView, PageNumberPagination):
+    page_size = 40
+
     def get(self, request, *args, **kwargs):
-        response = []
-        products = Product.objects.all()
-        for product in products:
-            product_obj = {
-                "id": product.id,
-                "name": product.name,
-                "store": product.store_id.name,
-                "category": product.category_id.name,
-                "brand": product.brand,
-                "size": product.size,
-                "image": product.image_url,
-                "redirect_page": product.page_url,
-                "price": Price.objects.filter(product_id=product).last().price,
-            }
-            response.append(product_obj)
-        return Response(response)
+        products = Product.objects.all().order_by("id")
+        results = self.paginate_queryset(products, request, view=self)
+        products_list = build_obj_list(results)
+        serializer = ProductResponseSerializer(products_list, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
-class CategoryView(APIView):
+class CategoryView(APIView, PageNumberPagination):
+    page_size = 40
+
     def get_category(self, category):
         try:
             return Category.objects.get(name=category)
@@ -53,28 +43,15 @@ class CategoryView(APIView):
 
     def get(self, request, category, *args, **kwargs):
         category_obj = self.get_category(category.title())
-        response = []
-        products = Product.objects.filter(category_id=category_obj)
-        for product in products:
-            product_obj = {
-                "id": product.id,
-                "name": product.name,
-                "store": product.store_id.name,
-                "category": product.category_id.name,
-                "brand": product.brand,
-                "size": product.size,
-                "image": product.image_url,
-                "redirect_page": product.page_url,
-                "price": Price.objects.filter(product_id=product).last().price,
-            }
-            response.append(product_obj)
-        return Response(response)
+        products = Product.objects.filter(category_id=category_obj).order_by("id")
+        results = self.paginate_queryset(products, request, view=self)
+        products_list = build_obj_list(results)
+        serializer = ProductResponseSerializer(products_list, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 class ProductView(APIView):
     def get_product(self, product_id):
-        print(product_id)
-        print(type(product_id))
         try:
             return Product.objects.get(pk=product_id)
         except Product.DoesNotExist:
@@ -82,62 +59,20 @@ class ProductView(APIView):
 
     def get(self, request, product_id, *args, **kwargs):
         product = self.get_product(product_id)
-        product_obj = {
-            "id": product.id,
-            "name": product.name,
-            "store": product.store_id.name,
-            "category": product.category_id.name,
-            "brand": product.brand,
-            "size": product.size,
-            "image": product.image_url,
-            "redirect_page": product.page_url,
-            "price": Price.objects.filter(product_id=product).last().price,
-        }
-        return Response(product_obj)
+        product_obj = build_obj(product)
+        serializer = ProductResponseSerializer(product_obj)
+        return Response(serializer.data)
 
 
 class UpdateProductsView(APIView):
     def post(self, request, *args, **kwargs):
-        try:
-            store_name = request.data["store"].title()
-            products_list = request.data["products_list"]
-        except Exception:
-            return Response({"message": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            print(store_name)
-            store = Store.objects.get(name=store_name)
-        except Exception:
-            return Response({"message": "Invalid store"}, status=status.HTTP_400_BAD_REQUEST)
-
-        for product in products_list:
-            try:
-                category = Category.objects.get(name=product["category"].title())
-            except Exception:
-                return Response(
-                    {"message": "Error in Category", "product": product}, status=status.HTTP_400_BAD_REQUEST
-                )
-            try:
-                product_obj = Product.objects.get(sku=product["sku"])
-            except Product.DoesNotExist:
-                product_obj = Product.objects.create(
-                    name=product["name"],
-                    store_id=store,
-                    category_id=category,
-                    sku=product["sku"],
-                    brand=product["brand"],
-                    size=product["size"],
-                    image_url=product["image_url"],
-                    page_url=product["page_url"],
-                )
-            time_now = get_time()
-            Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
-
-        response = {"message": "Information Received"}
-        return Response(response)
+        response = validate_and_save_data(request)
+        return response
 
 
-class FilterProductsView(APIView):
+class FilterProductsView(APIView, PageNumberPagination):
+    page_size = 40
+
     def get_by_keyword(self, keyword, *args, **kwargs):
         products = Product.objects.all()
         try:
@@ -145,25 +80,24 @@ class FilterProductsView(APIView):
         except Product.DoesNotExist:
             raise Http404 from None
 
+    def get_by_category(self, category, *args, **kwargs):
+        products = Product.objects.all()
+        try:
+            return products.filter(category_id__name=category)
+        except Product.DoesNotExist:
+            raise Http404 from None
+
     def get(self, request, *args, **kwargs):
-        response = []
-        print(request.query_params)
         keyword = request.query_params.get("keyword")
         filtered_products = self.get_by_keyword(keyword)
-        print(filtered_products)
-        if len(filtered_products) > 0:
-            for product in filtered_products:
-                product_obj = {
-                    "id": product.id,
-                    "name": product.name,
-                    "store": product.store_id.name,
-                    "category": product.category_id.name,
-                    "brand": product.brand,
-                    "size": product.size,
-                    "image": product.image_url,
-                    "redirect_page": product.page_url,
-                    "price": Price.objects.filter(product_id=product).last().price,
-                }
-                response.append(product_obj)
-            return Response(response)
+        products_by_category = self.get_by_category(keyword)
+        set_keyword = set(filtered_products)
+        set_category = set(products_by_category)
+        set_final = set_keyword.union(set_category)
+        if len(set_final) > 0:
+
+            results = self.paginate_queryset(list(set_final), request, view=self)
+            products_list = build_obj_list(results)
+            serializer = ProductResponseSerializer(products_list, many=True)
+            return self.get_paginated_response(serializer.data)
         raise Http404 from None
