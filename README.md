@@ -33,7 +33,7 @@ Body:
 {
     "store": "lider",
     "products_list": [{...}]
-}
+} 
 ```
 
 Body example:
