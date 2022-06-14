@@ -21,7 +21,7 @@ class ProductResponseSerializer(serializers.Serializer):
 
 class ProductPostSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=180)
-    store = serializers.CharField(max_length=180)
+    store = serializers.CharField(max_length=180, required=False)
     category = serializers.CharField(max_length=180)
     sku = serializers.CharField(max_length=180)
     brand = serializers.CharField(max_length=180)
