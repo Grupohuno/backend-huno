@@ -70,15 +70,15 @@ def validate_and_save_data(request):
                 product_obj = Product.objects.get(sku=product["sku"])
             except Product.DoesNotExist:
                 product_obj = Product.objects.create(
-                    name=product["name"],
+                    name=serializer.data["name"],
                     store_id=store,
                     category_id=category,
-                    sku=product["sku"],
-                    brand=product["brand"],
-                    size=product["size"],
-                    image_url=product["image_url"],
-                    page_url=product["page_url"],
-                    is_promotion=product["is_promotion"],
+                    sku=serializer.data["sku"],
+                    brand=serializer.data["brand"],
+                    size=serializer.data["size"],
+                    image_url=serializer.data["image_url"],
+                    page_url=serializer.data["page_url"],
+                    is_promotion=serializer.data["is_promotion"],
                 )
             time_now = get_time()
             Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
