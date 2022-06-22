@@ -28,6 +28,9 @@ class Product(models.Model):
     page_url = models.CharField(max_length=280)
     is_promotion = models.BooleanField(default=False)
 
+    def price(self):
+        return Price.objects.filter(product_id=self).last().price
+
     def __str__(self):
         return self.name
 

@@ -20,7 +20,7 @@ def build_obj_list(queryset):
             "size": product.size,
             "image": product.image_url,
             "redirect_page": product.page_url,
-            "price": Price.objects.filter(product_id=product).last().price,
+            "price": product.price(),
             "is_promotion": product.is_promotion,
         }
         obj_list.append(product_obj)
@@ -38,7 +38,7 @@ def build_obj(product):
         "size": product.size,
         "image": product.image_url,
         "redirect_page": product.page_url,
-        "price": Price.objects.filter(product_id=product).last().price,
+        "price": product.price(),
         "is_promotion": product.is_promotion,
     }
     return product_obj
