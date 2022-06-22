@@ -59,7 +59,12 @@ class ProductView(APIView):
 
     def get(self, request, product_id, *args, **kwargs):
         product = self.get_product(product_id)
+        related_products = Product.objects.filter(
+            category_id=product.category_id
+        ).exclude(id=product.id)
+        recommended_products = sorted(related_products, key=lambda p: p.price())[:5]
         product_obj = build_obj(product)
+        product_obj["recommended_products"] = build_obj_list(recommended_products)
         serializer = ProductResponseSerializer(product_obj)
         return Response(serializer.data)
 
