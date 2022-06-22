@@ -29,7 +29,11 @@ class Product(models.Model):
     is_promotion = models.BooleanField(default=False)
 
     def price(self):
-        return Price.objects.filter(product_id=self).last().price
+        last_price = Price.objects.filter(product_id=self).last()
+
+        if last_price is None:
+            return None
+        return last_price.price
 
     def __str__(self):
         return self.name
@@ -41,4 +45,4 @@ class Price(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True, related_name="product")
 
     def __str__(self):
-        return self.price
+        return str(self.price)
