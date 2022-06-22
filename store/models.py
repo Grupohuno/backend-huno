@@ -32,7 +32,7 @@ class Product(models.Model):
         last_price = Price.objects.filter(product_id=self).last()
 
         if last_price is None:
-            return
+            return None
         return last_price.price
 
     def __str__(self):

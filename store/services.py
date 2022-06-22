@@ -46,11 +46,11 @@ def build_obj(product):
 
 def validate_price(product, price):
     old_price = Price.objects.filter(product_id=product).last()
-    
+
     if old_price:
         variation = abs(old_price.price - price) * 100 / old_price.price
         return (variation < 200 and price > 0)
-    
+
     return True
 
 
