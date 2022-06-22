@@ -20,7 +20,7 @@ def build_obj_list(queryset):
             "size": product.size,
             "image": product.image_url,
             "redirect_page": product.page_url,
-            "price": Price.objects.filter(product_id=product).last().price,
+            "price": product.price(),
             "is_promotion": product.is_promotion,
         }
         obj_list.append(product_obj)
@@ -38,10 +38,20 @@ def build_obj(product):
         "size": product.size,
         "image": product.image_url,
         "redirect_page": product.page_url,
-        "price": Price.objects.filter(product_id=product).last().price,
+        "price": product.price(),
         "is_promotion": product.is_promotion,
     }
     return product_obj
+
+
+def validate_price(product, price):
+    old_price = Price.objects.filter(product_id=product).last()
+
+    if old_price:
+        variation = abs(old_price.price - price) * 100 / old_price.price
+        return (variation < 200 and price > 0)
+
+    return True
 
 
 def validate_and_save_data(request):
@@ -81,7 +91,8 @@ def validate_and_save_data(request):
                     is_promotion=serializer.data["is_promotion"],
                 )
             time_now = get_time()
-            Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
+            if validate_price(product_obj, product["price"]):
+                Price.objects.create(price=product["price"], date=time_now, product_id=product_obj)
         else:
             print(serializer.errors)
             error_list_products.append(product)
