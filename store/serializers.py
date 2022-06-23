@@ -29,5 +29,4 @@ class ProductPostSerializer(serializers.Serializer):
     size = serializers.CharField(max_length=180)
     image_url = serializers.CharField(max_length=280)
     page_url = serializers.CharField(max_length=280)
-    price = serializers.IntegerField()
     is_promotion = serializers.BooleanField(default=False)
