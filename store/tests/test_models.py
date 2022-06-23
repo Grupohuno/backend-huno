@@ -1,6 +1,7 @@
+# pylint: disable=W0621
 import pytest
 
-from store.models import Store, Category, Product, Price
+from store.models import Store, Category, Price
 
 
 @pytest.mark.django_db
@@ -17,20 +18,9 @@ def test_create_category():
 
 
 @pytest.mark.django_db
-def test_create_product():
-    store = Store.objects.create(name="Store1", web_url="www.store1.cl")
-    category = Category.objects.create(name="C1")
-    product = Product.objects.create(
-        name="P1",
-        store_id=store,
-        category_id=category,
-        sku="1234",
-        brand="brand",
-        size="330cc",
-        image_url="www.image.cl",
-        page_url="www.buypage.cl",
-    )
-    assert product.name == "P1"
+def test_create_product(seed_db):
+    product = seed_db['product']
+    assert product.name == "Searchable product beeer inside"
     assert product.store_id.name == "Store1"
     assert product.category_id.name == "C1"
     assert product.sku == "1234"
@@ -41,19 +31,10 @@ def test_create_product():
 
 
 @pytest.mark.django_db
-def test_create_price():
-    store = Store.objects.create(name="Store1", web_url="www.store1.cl")
-    category = Category.objects.create(name="C1")
-    product = Product.objects.create(
-        name="P1",
-        store_id=store,
-        category_id=category,
-        sku="1234",
-        brand="brand",
-        size="330cc",
-        image_url="www.image.cl",
-    )
+def test_create_price(seed_db):
+    product = seed_db['product']
+
     price = Price.objects.create(price=1990, date="2022-05-17", product_id=product)
     assert price.price == 1990
     assert price.date == "2022-05-17"
-    assert price.product_id.name == "P1"
+    assert price.product_id.name == "Searchable product beeer inside"
