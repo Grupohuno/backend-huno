@@ -17,7 +17,7 @@ class ProductResponseSerializer(serializers.Serializer):
     redirect_page = serializers.CharField(max_length=280)
     price = serializers.IntegerField()
     is_promotion = serializers.BooleanField()
-    recommended_products = serializers.ListField()
+    recommended_products = serializers.ListField(default=None)
 
 
 class ProductPostSerializer(serializers.Serializer):
