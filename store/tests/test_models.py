@@ -33,7 +33,6 @@ def test_create_product(seed_db):
 @pytest.mark.django_db
 def test_create_price(seed_db):
     product = seed_db["product"]
-
     price = Price.objects.create(price=1990, date="2022-05-17", product_id=product)
     assert price.price == 1990
     assert price.date == "2022-05-17"
