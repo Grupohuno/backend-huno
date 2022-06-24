@@ -1,10 +1,10 @@
 import pytest
 from rest_framework.test import APIClient
 
+
 @pytest.fixture
 def client():
     return APIClient()
-
 
 
 @pytest.mark.django_db
@@ -18,7 +18,6 @@ class TestApi:
         assert response.status_code == 200
         data = response.json()
         assert len(data["results"]) == 1
-
 
     def test_get_products_category(self, client):
         response = client.get("/api/v1/products/category/C1")
