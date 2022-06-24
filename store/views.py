@@ -106,3 +106,40 @@ class FilterProductsView(APIView, PageNumberPagination):
             serializer = ProductResponseSerializer(products_list, many=True)
             return self.get_paginated_response(serializer.data)
         raise Http404 from None
+
+class NonPaginateProductsView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        products = Product.objects.all().order_by("id")
+        products_list = build_obj_list(products)
+        serializer = ProductResponseSerializer(products_list, many=True)
+        return Response(serializer.data)
+
+class NonPaginateFilterProductsView(APIView):
+
+    def get_by_keyword(self, keyword, *args, **kwargs):
+        products = Product.objects.all()
+        try:
+            return products.filter(name__icontains=keyword)
+        except Product.DoesNotExist:
+            raise Http404 from None
+
+    def get_by_category(self, category, *args, **kwargs):
+        products = Product.objects.all()
+        try:
+            return products.filter(category_id__name=category)
+        except Product.DoesNotExist:
+            raise Http404 from None
+
+    def get(self, request, *args, **kwargs):
+        keyword = request.query_params.get("keyword")
+        filtered_products = self.get_by_keyword(keyword)
+        products_by_category = self.get_by_category(keyword)
+        set_keyword = set(filtered_products)
+        set_category = set(products_by_category)
+        set_final = set_keyword.union(set_category)
+        if len(set_final) > 0:
+            products_list = build_obj_list(list(set_final))
+            serializer = ProductResponseSerializer(products_list, many=True)
+            return Response(serializer.data)
+        raise Http404 from None
