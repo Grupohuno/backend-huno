@@ -19,7 +19,7 @@ def test_create_category():
 
 @pytest.mark.django_db
 def test_create_product(seed_db):
-    product = seed_db['product']
+    product = seed_db["product"]
     assert product.name == "Searchable product beeer inside"
     assert product.store_id.name == "Store1"
     assert product.category_id.name == "C1"
@@ -32,7 +32,7 @@ def test_create_product(seed_db):
 
 @pytest.mark.django_db
 def test_create_price(seed_db):
-    product = seed_db['product']
+    product = seed_db["product"]
 
     price = Price.objects.create(price=1990, date="2022-05-17", product_id=product)
     assert price.price == 1990

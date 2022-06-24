@@ -1,6 +1,7 @@
 import pytest
 from store.models import Store, Category, Product
 
+
 @pytest.fixture(autouse=True)
 @pytest.mark.django_db
 def seed_db():
@@ -16,4 +17,4 @@ def seed_db():
         image_url="www.image.cl",
         page_url="www.buypage.cl",
     )
-    return {'store': store, 'category': category, 'product': product}
+    return {"store": store, "category": category, "product": product}

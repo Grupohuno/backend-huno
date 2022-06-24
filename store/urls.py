@@ -1,5 +1,14 @@
 from django.urls import path
-from .views import DummyView, ProductsView, CategoryView, ProductView, UpdateProductsView, FilterProductsView, NonPaginateProductsView,NonPaginateFilterProductsView
+from .views import (
+    DummyView,
+    ProductsView,
+    CategoryView,
+    ProductView,
+    UpdateProductsView,
+    FilterProductsView,
+    NonPaginateProductsView,
+    NonPaginateFilterProductsView,
+)
 
 urlpatterns = [
     path("dummy/", DummyView.as_view()),

@@ -59,9 +59,7 @@ class ProductView(APIView):
 
     def get(self, request, product_id, *args, **kwargs):
         product = self.get_product(product_id)
-        related_products = Product.objects.filter(
-            category_id=product.category_id
-        ).exclude(id=product.id)
+        related_products = Product.objects.filter(category_id=product.category_id).exclude(id=product.id)
         recommended_products = sorted(related_products, key=lambda p: p.price())[:5]
         product_obj = build_obj(product)
         product_obj["recommended_products"] = build_obj_list(recommended_products)
@@ -107,16 +105,16 @@ class FilterProductsView(APIView, PageNumberPagination):
             return self.get_paginated_response(serializer.data)
         raise Http404 from None
 
-class NonPaginateProductsView(APIView):
 
+class NonPaginateProductsView(APIView):
     def get(self, request, *args, **kwargs):
         products = Product.objects.all().order_by("id")
         products_list = build_obj_list(products)
         serializer = ProductResponseSerializer(products_list, many=True)
         return Response(serializer.data)
 
-class NonPaginateFilterProductsView(APIView):
 
+class NonPaginateFilterProductsView(APIView):
     def get_by_keyword(self, keyword, *args, **kwargs):
         products = Product.objects.all()
         try:
