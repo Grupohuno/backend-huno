@@ -49,7 +49,7 @@ def validate_price(product, price):
 
     if old_price:
         variation = abs(old_price.price - price) * 100 / old_price.price
-        return (variation < 200 and price > 0)
+        return variation < 200 and price > 0
 
     return True
 
